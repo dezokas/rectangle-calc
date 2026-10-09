@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kalkulator Luas dan Keliling Persegi Panjang dengan tampilan minimalis tema Google Dark Mode.">
+    <title>Kalkulator Persegi Panjang - Google Dark Theme</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <!-- Google 4-Color Accent Bar -->
+        <div class="google-accent-bar" aria-hidden="true">
+            <div class="accent-blue"></div>
+            <div class="accent-red"></div>
+            <div class="accent-yellow"></div>
+            <div class="accent-green"></div>
+        </div>
+
+        <div class="card-content">
+            <!-- Header Section -->
+            <header class="card-header">
+                <div class="brand-badge">
+                    <span class="dots-group">
+                        <span class="dot dot-blue"></span>
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </span>
+                    <span>Demo JavaScript</span>
+                </div>
+                <h1 class="card-title">Demo <span class="highlight">JavaScript</span></h1>
+                <p class="card-subtitle">Kalkulator Luas &amp; Keliling Persegi Panjang</p>
+            </header>
+
+            <!-- Form Inputs -->
+            <section class="form-section">
+                <div class="input-row">
+                    <!-- Input Panjang -->
+                    <div class="input-group">
+                        <label for="input-panjang" class="input-label">
+                            <span><span class="label-indicator indicator-blue"></span>Panjang (p)</span>
+                            <small>Nilai: <strong id="panjang">-</strong></small>
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="number" 
+                                id="input-panjang" 
+                                class="input-field" 
+                                value="" 
+                                min="0" 
+                                step="any" 
+                                placeholder="Masukkan panjang"
+                                autocomplete="off"
+                                autofocus
+                            >
+                            <span class="input-unit">m</span>
+                        </div>
+                    </div>
+
+                    <!-- Input Lebar -->
+                    <div class="input-group">
+                        <label for="input-lebar" class="input-label">
+                            <span><span class="label-indicator indicator-yellow"></span>Lebar (l)</span>
+                            <small>Nilai: <strong id="lebar">-</strong></small>
+                        </label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="number" 
+                                id="input-lebar" 
+                                class="input-field" 
+                                value="" 
+                                min="0" 
+                                step="any" 
+                                placeholder="Masukkan lebar"
+                                autocomplete="off"
+                            >
+                            <span class="input-unit">m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-row">
+                    <button type="button" id="btn-hitung" class="btn btn-primary" onclick="hitungPersegiPanjang()">
+                        Hitung Otomatis
+                    </button>
+                    <button type="button" id="btn-reset" class="btn btn-ghost" onclick="resetForm()">
+                        Reset
+                    </button>
+                </div>
+            </section>
+
+            <!-- Interactive Geometry Preview -->
+            <div class="preview-container" aria-label="Visualisasi Persegi Panjang">
+                <span class="preview-label">Visualisasi Proporsi</span>
+                <div class="preview-stage">
+                    <div id="preview-box" class="preview-box">&mdash;</div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-grid" aria-label="Hasil Perhitungan">
+                <!-- Luas Card -->
+                <div class="result-card luas-card">
+                    <div class="result-header">
+                        <span class="result-tag">Luas</span>
+                        <span class="result-formula">L = p &times; l</span>
+                    </div>
+                    <div class="result-value-container">
+                        <span id="luas" class="result-value">-</span>
+                        <span class="result-unit">m<sup>2</sup></span>
+                    </div>
+                </div>
+
+                <!-- Keliling Card -->
+                <div class="result-card keliling-card">
+                    <div class="result-header">
+                        <span class="result-tag">Keliling</span>
+                        <span class="result-formula">K = 2 &times; (p + l)</span>
+                    </div>
+                    <div class="result-value-container">
+                        <span id="keliling" class="result-value">-</span>
+                        <span class="result-unit">m</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Footer -->
+            <footer class="info-strip">
+                <div class="info-item">
+                    <span>Satuan: <span class="mono">Meter (m)</span></span>
+                </div>
+                <div class="info-item">
+                    <span>Live Auto-Calculate</span>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        /**
+         * Fungsi utama untuk menghitung Luas dan Keliling Persegi Panjang
+         */
+        function hitungPersegiPanjang() {
+            const inputPanjangEl = document.getElementById("input-panjang");
+            const inputLebarEl = document.getElementById("input-lebar");
+
+            const rawP = inputPanjangEl.value.trim();
+            const rawL = inputLebarEl.value.trim();
+
+            /*
+                ==Task 1==
+                Buat variable panjang dan lebar dengan tipe data number
+            */
+            let panjang = rawP === "" ? 0 : Number(rawP);
+            let lebar = rawL === "" ? 0 : Number(rawL);
+
+            // Validasi jika input bukan angka atau bernilai negatif
+            if (isNaN(panjang) || panjang < 0) panjang = 0;
+            if (isNaN(lebar) || lebar < 0) lebar = 0;
+
+            /*
+                ==Task 2==
+                Buat variable luas yang berisi hasil perkalian panjang dan lebar
+            */
+            let luas = panjang * lebar;
+
+            /*
+                ==Task 3==
+                Buat variable keliling yang berisi hasil 2 * (panjang + lebar)
+            */
+            let keliling = 2 * (panjang + lebar);
+
+            // Jika kedua input masih kosong saat halaman baru dibuka
+            if (rawP === "" && rawL === "") {
+                document.getElementById("panjang").innerText = "-";
+                document.getElementById("lebar").innerText = "-";
+                document.getElementById("luas").innerText = "-";
+                document.getElementById("keliling").innerText = "-";
+                updateVisualisasi(0, 0);
+                return;
+            }
+
+            // Menampilkan nilai ke elemen HTML
+            document.getElementById("panjang").innerText = rawP === "" ? "-" : formatNumber(panjang);
+            document.getElementById("lebar").innerText = rawL === "" ? "-" : formatNumber(lebar);
+            document.getElementById("luas").innerText = formatNumber(luas);
+            document.getElementById("keliling").innerText = formatNumber(keliling);
+
+            // Memperbarui visualisasi proporsi persegi panjang
+            updateVisualisasi(panjang, lebar);
+        }
+
+        /**
+         * Format angka agar tidak menampilkan desimal berlebihan jika bukan pecahan
+         */
+        function formatNumber(num) {
+            if (Number.isInteger(num)) {
+                return num.toString();
+            }
+            return parseFloat(num.toFixed(2)).toString();
+        }
+
+        /**
+         * Memperbarui ukuran kotak visualisasi sesuai rasio panjang : lebar
+         */
+        function updateVisualisasi(p, l) {
+            const box = document.getElementById("preview-box");
+            if (!box) return;
+
+            if (p <= 0 || l <= 0) {
+                box.style.width = "40px";
+                box.style.height = "40px";
+                box.innerHTML = "&mdash;";
+                return;
+            }
+
+            // Batas maksimal dimensi wadah preview
+            const maxW = 200;
+            const maxH = 75;
+            const ratio = p / l;
+
+            let w, h;
+            if (ratio >= 1) {
+                // Panjang lebih besar dari lebar (mendatar)
+                w = maxW;
+                h = Math.max(24, Math.min(maxH, maxW / ratio));
+            } else {
+                // Lebar lebih besar dari panjang (tegak)
+                h = maxH;
+                w = Math.max(28, Math.min(maxW, maxH * ratio));
+            }
+
+            box.style.width = Math.round(w) + "px";
+            box.style.height = Math.round(h) + "px";
+            box.innerText = `${p}m × ${l}m`;
+        }
+
+        /**
+         * Reset form kembali ke nilai default
+         */
+        function resetForm() {
+            document.getElementById("input-panjang").value = "";
+            document.getElementById("input-lebar").value = "";
+            document.getElementById("input-panjang").focus();
+            hitungPersegiPanjang();
+        }
+
+        // Pasang event listener untuk perhitungan otomatis langsung saat mengetik (real-time)
+        const panjangInput = document.getElementById("input-panjang");
+        const lebarInput = document.getElementById("input-lebar");
+
+        panjangInput.addEventListener("input", hitungPersegiPanjang);
+        lebarInput.addEventListener("input", hitungPersegiPanjang);
+
+        // Jalankan perhitungan awal saat halaman dimuat
+        hitungPersegiPanjang();
+    </script>
+</body>
+</html>
